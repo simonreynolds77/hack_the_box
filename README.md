@@ -1,1 +1,3 @@
-# hack_the_box
+Recording work done on Hack the Box
+
+hack_the_box
