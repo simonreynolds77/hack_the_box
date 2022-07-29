@@ -37,7 +37,7 @@ Service detection performed. Please report any incorrect results at https://nmap
 Nmap done: 1 IP address (1 host up) scanned in 203.11 seconds
 
 
-note the addtion of -sC in the arugments for nmap. 
+note the addtion of -sC in the arugments for nmap. this has provided the answer for Task 3 - Version: 5.5.5-10.3.27-MariaDB-0+deb10u1
 
 
 
@@ -69,21 +69,33 @@ TASK 4
 
 What switch do we need to use in order to specify a login username for the MySQL service?
 
-
+-u
 
 
 
 TASK 5
 
-Which username allows us to log into MariaDB without providing a password?
+Which username allows us to log into MariaDB without providing a password?  
+
+root
+
+
 
 TASK 6
 
 What symbol can we use to specify within the query that we want to display everything inside a table?
 
+*
+
+
+
 TASK 7
 
 What symbol do we need to end each query with?
+
+;
+
+
 
 SUBMIT FLAG
 
