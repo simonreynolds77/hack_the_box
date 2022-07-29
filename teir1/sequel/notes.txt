@@ -58,7 +58,7 @@ ERROR 2059 (HY000): Plugin http could not be loaded: /usr/lib/aarch64-linux-gnu/
 
 
 reset the machine and used the following:
-10.129.22.144
+mysql -u root -h 10.129.22.144
 
 https://mariadb.com/kb/en/show-tables/
 
