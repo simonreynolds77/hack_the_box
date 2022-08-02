@@ -1,0 +1,250 @@
+nmap options list
+https://nmap.org/book/man-briefoptions.html
+
+└─$ nmap -sC 10.129.160.105  
+Starting Nmap 7.92 ( https://nmap.org ) at 2022-07-30 18:12 UTC
+Nmap scan report for 10.129.160.105
+Host is up (0.047s latency).
+Not shown: 998 closed tcp ports (conn-refused)
+PORT   STATE SERVICE
+21/tcp open  ftp
+| ftp-syst: 
+|   STAT: 
+| FTP server status:
+|      Connected to ::ffff:10.10.15.119
+|      Logged in as ftp
+|      TYPE: ASCII
+|      No session bandwidth limit
+|      Session timeout in seconds is 300
+|      Control connection is plain text
+|      Data connections will be plain text
+|      At session startup, client count was 2
+|      vsFTPd 3.0.3 - secure, fast, stable
+|_End of status
+| ftp-anon: Anonymous FTP login allowed (FTP code 230)
+| -rw-r--r--    1 ftp      ftp            33 Jun 08  2021 allowed.userlist
+|_-rw-r--r--    1 ftp      ftp            62 Apr 20  2021 allowed.userlist.passwd
+80/tcp open  http
+|_http-title: Smash - Bootstrap Business Template
+
+Nmap done: 1 IP address (1 host up) scanned in 7.03 seconds
+
+
+─$ nmap -sV 10.129.160.105
+Starting Nmap 7.92 ( https://nmap.org ) at 2022-07-30 20:15 UTC
+Nmap scan report for 10.129.160.105
+Host is up (0.039s latency).
+Not shown: 998 closed tcp ports (conn-refused)
+PORT   STATE SERVICE VERSION
+21/tcp open  ftp     vsftpd 3.0.3
+80/tcp open  http    Apache httpd 2.4.41 ((Ubuntu))
+Service Info: OS: Unix
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 8.51 seconds
+
+
+## Some note were lost from the FTP portion of this challenge however 
+ftp> get allowed.userlist
+ftp> allowed.userlist.passwd
+
+commands were used to obtain the files from the FTP. It was possible to log onto the FTP with the username anonymous as the FTP service 
+was configured to allow that:
+ftp-anon: Anonymous FTP login allowed (FTP code 230)
+
+
+
+─$ gobuster -u http://10.129.252.119 -w /usr/share/wordlists/dirb/common.txt dir
+===============================================================
+Gobuster v3.1.0
+by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
+===============================================================
+[+] Url:                     http://10.129.252.119
+[+] Method:                  GET
+[+] Threads:                 10
+[+] Wordlist:                /usr/share/wordlists/dirb/common.txt
+[+] Negative Status codes:   404
+[+] User Agent:              gobuster/3.1.0
+[+] Timeout:                 10s
+===============================================================
+2022/07/30 23:03:24 Starting gobuster in directory enumeration mode
+===============================================================
+/.hta                 (Status: 403) [Size: 279]
+/.htaccess            (Status: 403) [Size: 279]
+/.htpasswd            (Status: 403) [Size: 279]
+/assets               (Status: 301) [Size: 317] [--> http://10.129.252.119/assets/]
+/css                  (Status: 301) [Size: 314] [--> http://10.129.252.119/css/]   
+/dashboard            (Status: 301) [Size: 320] [--> http://10.129.252.119/dashboard/]
+/fonts                (Status: 301) [Size: 316] [--> http://10.129.252.119/fonts/]    
+/index.html           (Status: 200) [Size: 58565]                                     
+/js                   (Status: 301) [Size: 313] [--> http://10.129.252.119/js/]       
+/server-status        (Status: 403) [Size: 279]                                       
+                                                                                      
+===============================================================
+2022/07/30 23:03:45 Finished
+===============================================================
+
+
+/usr/share/wordlists/dirb/common.txt was updated to include .php 
+
+new gobuster scan with that word file returned:
+
+└─$ gobuster -u http://10.129.252.119 -w /usr/share/wordlists/dirb/common.txt dir
+===============================================================
+Gobuster v3.1.0
+by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
+===============================================================
+[+] Url:                     http://10.129.252.119
+[+] Method:                  GET
+[+] Threads:                 10
+[+] Wordlist:                /usr/share/wordlists/dirb/common.txt
+[+] Negative Status codes:   404
+[+] User Agent:              gobuster/3.1.0
+[+] Timeout:                 10s
+===============================================================
+2022/07/30 23:07:49 Starting gobuster in directory enumeration mode
+===============================================================
+/.hta                 (Status: 403) [Size: 279]
+/.htaccess            (Status: 403) [Size: 279]
+/.htpasswd            (Status: 403) [Size: 279]
+/.php                 (Status: 403) [Size: 279]
+/assets               (Status: 301) [Size: 317] [--> http://10.129.252.119/assets/]
+/css                  (Status: 301) [Size: 314] [--> http://10.129.252.119/css/]   
+/dashboard            (Status: 301) [Size: 320] [--> http://10.129.252.119/dashboard/]
+/fonts                (Status: 301) [Size: 316] [--> http://10.129.252.119/fonts/]    
+/index.html           (Status: 200) [Size: 58565]                                     
+/js                   (Status: 301) [Size: 313] [--> http://10.129.252.119/js/]       
+/server-status        (Status: 403) [Size: 279]                                       
+                                                                                      
+===============================================================
+2022/07/30 23:08:11 Finished
+===============================================================
+
+A further gobuster scan was used to filter .php files:
+$ gobuster -u http://10.129.252.119 -w /usr/share/wordlists/dirb/common.txt -x php dir
+===============================================================
+Gobuster v3.1.0
+by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
+===============================================================
+[+] Url:                     http://10.129.252.119
+[+] Method:                  GET
+[+] Threads:                 10
+[+] Wordlist:                /usr/share/wordlists/dirb/common.txt
+[+] Negative Status codes:   404
+[+] User Agent:              gobuster/3.1.0
+[+] Extensions:              php
+[+] Timeout:                 10s
+===============================================================
+2022/07/30 23:18:07 Starting gobuster in directory enumeration mode
+===============================================================
+/.hta                 (Status: 403) [Size: 279]
+/.htaccess            (Status: 403) [Size: 279]
+/.hta.php             (Status: 403) [Size: 279]
+/.htpasswd            (Status: 403) [Size: 279]
+/.htaccess.php        (Status: 403) [Size: 279]
+/.htpasswd.php        (Status: 403) [Size: 279]
+/.php                 (Status: 403) [Size: 279]
+/assets               (Status: 301) [Size: 317] [--> http://10.129.252.119/assets/]
+/config.php           (Status: 200) [Size: 0]                                      
+/css                  (Status: 301) [Size: 314] [--> http://10.129.252.119/css/]   
+/dashboard            (Status: 301) [Size: 320] [--> http://10.129.252.119/dashboard/]
+/fonts                (Status: 301) [Size: 316] [--> http://10.129.252.119/fonts/]    
+/index.html           (Status: 200) [Size: 58565]                                     
+/js                   (Status: 301) [Size: 313] [--> http://10.129.252.119/js/]       
+/login.php            (Status: 200) [Size: 1577]                                      
+/logout.php           (Status: 302) [Size: 0] [--> login.php]                         
+/server-status        (Status: 403) [Size: 279]                                       
+                                                                                      
+===============================================================
+2022/07/30 23:18:51 Finished
+===============================================================
+
+
+
+
+http://10.129.252.119/login.php
+prompts for log in credentials. 
+using the admin credentials from the allowed.userlist i was able to log on and access 
+http://10.129.252.119/dashboard/index.php
+this has given the flag:
+
+c7110277ac44d78b6a9fff2232434d16
+
+
+
+
+Task 1
+
+What nmap scanning switch employs the use of default scripts during a scan?
+
+-sC
+
+
+
+Task 2
+
+What service version is found to be running on port 21?
+
+vsftpd 3.0.3
+
+
+
+Task 3
+
+What FTP code is returned to us for the "Anonymous FTP login allowed" message?
+
+203
+
+
+
+Task 4
+
+What command can we use to download the files we find on the FTP server?
+
+get
+
+
+
+Task 5
+
+What is one of the higher-privilege sounding usernames in the list we retrieved?
+
+admin # this was guessed initally due to the clue provided - ****n - however this was found in the allowed.userlist file
+
+
+
+Task 6
+
+What version of Apache HTTP Server is running on the target host?
+
+2.4.41 # found from the nmap scan nmap -sV 10.129.160.105
+
+
+
+Task 7
+
+What is the name of a handy web site analysis plug-in we can install in our browser?
+
+wappanalyzer # found by google
+
+
+Task 8
+
+What switch can we use with gobuster to specify we are looking for specific filetypes?
+
+-x # googled answer
+
+
+
+Task 9
+
+What file have we found that can provide us a foothold on the target?
+
+login.php # .php was guessed from the clue *****.**p - the file was found using 
+		gobuster -u http://10.129.252.119 -w /usr/share/wordlists/dirb/common.txt -x php dir
+
+
+Submit Flag
+
+Submit root flag 
+c7110277ac44d78b6a9fff2232434d16
